@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../partials/head') %>
+  </head>
+  <body>
+    <%- include('../partials/nav') %>
+
+    <div class="container mb-3">
+
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-1 pl-2 pr-2">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item"><a href="/reports">Board</a></li>
+          <li class="breadcrumb-item active" aria-current="page">New Post</li>
+        </ol>
+      </nav>
+
+      <form action="/reports<%= getPostQueryString() %>" method="post">
+
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" value="<%= report.title %>" class="form-control <%= (errors.title)?'is-invalid':'' %>">
+          <% if(errors.title){ %>
+            <span class="invalid-feedback"><%= errors.title.message %></span>
+          <% } %>
+        </div>
+
+        <div class="form-group">
+          <label for="date">date</label>
+          <input type="date" id="date" name="date" value="<%= report.date %>" class="form-control <%= (errors.date)?'is-invalid':'' %>">
+          <% if(errors.date){ %>
+            <span class="invalid-feedback"><%= errors.date.message %></span>
+          <% } %>
+        </div>
+
+        <div class="form-group">
+          <label for="body1">업무내역</label>
+          <textarea id="body1" name="body1" rows="5" class="form-control <%= (errors.body1)?'is-invalid':'' %>"><%= report.body1 %>
+1.
+2.
+3.
+4.
+5.
+6.
+
+          </textarea>
+          <% if(errors.body1){ %>
+            <span class="invalid-feedback"><%= errors.body1.message %></span>
+          <% } %>
+        </div>
+
+        <div class="form-group">
+          <label for="body2">기타 특이사항(없으면 없다고 기재)</label>
+          <textarea id="body2" name="body2" rows="5" class="form-control <%= (errors.body2)?'is-invalid':'' %>"><%= report.body2 %>
+1.
+2.
+3.
+          </textarea>
+          <% if(errors.body2){ %>
+            <span class="invalid-feedback"><%= errors.body2.message %></span>
+          <% } %>
+        </div>
+
+        <div class="form-group">
+          <label for="body3">예정사항</label>
+          <textarea id="body3" name="body3" rows="5" class="form-control <%= (errors.body3)?'is-invalid':'' %>"><%= report.body3 %>
+1.
+2.
+3.
+          </textarea>
+          <% if(errors.body3){ %>
+            <span class="invalid-feedback"><%= errors.body3.message %></span>
+          <% } %>
+        </div>
+
+        <% if(errors.unhandled){ %>
+          <div class="invalid-feedback d-block">
+            <%= errors.unhandled %>
+          </div>
+        <% } %>
+
+        <div>
+          <a class="btn btn-primary" href="/reports<%= getPostQueryString() %>">Back</a>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+
+      </form>
+
+    </div>
+  </body>
+</html>

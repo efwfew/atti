@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../partials/head') %>
+  </head>
+  <body>
+    <%- include('../partials/nav') %>
+
+    <div class="container mb-3">
+
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-1 pl-2 pr-2">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item"><a href="/samples">Back</a></li>
+          <li class="breadcrumb-item active" aria-current="page">새로 작성</li>
+        </ol>
+      </nav>
+
+      <form action="/samples<%= getPostQueryString() %>" method="post">
+
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" value="<%= sample.title %>" class="form-control <%= (errors.title)?'is-invalid':'' %>" placeholder="0월 0일 ㅇㅇ어린이집 샘플동향">
+          <% if(errors.title){ %>
+            <span class="invalid-feedback"><%= errors.title.message %></span>
+          <% } %>
+        </div>
+
+        <div class="form-group">
+          <label for="body">Body</label>
+          <textarea id="body" name="body" rows="18" class="form-control <%= (errors.body)?'is-invalid':'' %>"><%= sample.body %>
+1. 어린이집 명:
+
+2. 주소: 
+
+3. 전화번호: 
+
+4. 샘플날짜시간:
+
+5. 샘플담당자: 
+            
+6. 기존수업시간: 
+            
+7. 요청수업시간: 
+            
+8. 특이사항: </textarea>
+          <% if(errors.body){ %>
+            <span class="invalid-feedback"><%= errors.body.message %></span>
+          <% } %>
+        </div>
+
+        <% if(errors.unhandled){ %>
+          <div class="invalid-feedback d-block">
+            <%= errors.unhandled %>
+          </div>
+        <% } %>
+
+        <div>
+          <a class="btn btn-primary" href="/samples<%= getPostQueryString() %>">Back</a>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+
+      </form>
+
+    </div>
+  </body>
+</html>
