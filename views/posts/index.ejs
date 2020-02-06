@@ -15,8 +15,8 @@
         <thead class="thead-light">
           <tr>
             <th scope="col">Title</th>
-            <th scope="col" class="author">Author</th>
-            <th scope="col" class="date">Date</th>
+            <th scope="col" class="author">작성자</th>
+            <th scope="col" class="date">일시</th>
           </tr>
         </thead>
 
@@ -35,7 +35,7 @@
               </td>
               <td class="author">
                 <a href="/posts<%= getPostQueryString(false, { searchType:'author!', searchText:post.author.username }) %>">
-                  <div data-search-highlight="author" class="ellipsis"><%= post.author ? post.author.username : "" %></div>
+                  <div data-search-highlight="author" class="ellipsis"><%= post.author ? post.author.name : "" %></div>
                 </a>
               </td>
               <td class="date">

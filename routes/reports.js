@@ -107,7 +107,7 @@ router.put('/:id', util.isLoggedin, checkPermission, function(req, res){
 
 // destroy
 router.delete('/:id', util.isLoggedin, checkPermission, function(req, res){
-  RReport.deleteOne({_id:req.params.id}, function(err){
+  Report.deleteOne({_id:req.params.id}, function(err){
     if(err) return res.json(err);
     res.redirect('/reports'+res.locals.getPostQueryString());
   });

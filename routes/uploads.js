@@ -4,15 +4,9 @@ var router = express.Router();
 var util = require("../util");
 var User = require("../models/user");
 var fs = require ('fs');
-var crypto = require('crypto');
-var hash = crypto.createHash('md5');
 var Fileinfo = require('../models/fileinfo');
 var Wallet = require("../models/wallet")
-var async = require('async')
 // var fd = fs.createReadStream('/ path and file name.name');
-
-//Infura HttpProvider Endpoint
-var Web3 = new web3(new web3.providers.HttpProvider("https://ropsten.infura.io/v3/66f5bc220371494cb3465fca20893eb4"));
 
 router.get("/", util.isLoggedin, function (req, res) {
     Wallet.find({})
@@ -232,23 +226,3 @@ router.get("/fileinfo/:id", function(req, res){
 });
 
 module.exports = router;
-
-function createSearch(queries){
-    var findPost = {};
-    if(queries.searchType && queries.searchText && queries.searchText.length >= 3){
-      var searchTypes = queries.searchType.toLowerCase().split(",");
-      var postQueries = [];
-      if(searchTypes.indexOf("uploadername")>=0){
-        postQueries.push({ uploadername : { $regex : new RegExp(queries.searchText, "i") } });
-      }
-      if(searchTypes.indexOf("originalname")>=0){
-        postQueries.push({ originalname : { $regex : new RegExp(queries.searchText, "i") } });
-      }
-      if(searchTypes.indexOf("filehash")>=0){
-        postQueries.push({ filehash : { $regex : new RegExp(queries.searchText, "i") } });
-      }
-      if(postQueries.length > 0) findPost = {$or:postQueries};
-    }
-    return { searchType:queries.searchType, searchText:queries.searchText,
-      findPost:findPost};
-  }

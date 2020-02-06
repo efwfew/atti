@@ -20,7 +20,7 @@
 
         <div class="form-group">
           <label for="title">Title</label>
-          <input type="text" id="title" name="title" value="<%= report.title %>" class="form-control <%= (errors.title)?'is-invalid':'' %>">
+          <input type="text" id="title" name="title" value="<%= report.title %>" class="form-control <%= (errors.title)?'is-invalid':'' %>" placeholder="0월 0일 ㅇㅇㅇ 업무보고">
           <% if(errors.title){ %>
             <span class="invalid-feedback"><%= errors.title.message %></span>
           <% } %>
