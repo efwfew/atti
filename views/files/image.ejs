@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/head') %>
+</head>
+
+<body>
+    <%- include('../partials/nav') %>
+
+    <div class="container mb-3">
+
+        <h2 class="mb-3">Board</h2>
+
+        <table class="board-table table table-sm border-bottom">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col" class="author">작성자</th>
+                    <th scope="col">Title</th>
+
+                    <!-- <th class="date">Date</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <% if(filelist == null || filelist.length == 0){ %>
+                <tr>
+                    <td class="noData" colspan=100> There is no file to show </td>
+                </tr>
+                <% } %>
+
+                <% filelist.forEach(function(element, index, File) { %>
+                <tr>
+                    <td class="author">
+                        <div data-search-highlight="author" class="ellipsis">
+                            <%= index %>
+                        </div>
+                    </td>
+                    <td>
+                        <div data-search-highlight="title" class="ellipsis">
+                            <%= element %></div>
+                    </td>
+                    <!-- <td class="date">
+                      <%= element.createdDate %>
+                  </td> -->
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+        <div class="row mb-3">
+        <form class="buttons" method='post' enctype="multipart/form-data">
+            
+                <input class='btn btn-primary' type='file' name='userfile'>
+                <input class="btn btn-primary" type='submit' >
+            
+        </form>
+    </div>
+    </div> <!-- container end -->
+</body>
+
+</html>

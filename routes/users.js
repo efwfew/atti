@@ -2,6 +2,17 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/User');
 var util = require('../util');
+var fs = require('fs')
+
+// Index // 1
+router.get("/list", util.isLoggedin, function(req, res){
+  User.find({})
+  .sort({username:1})
+  .exec(function(err, users){
+   if(err) return res.json(err);
+   res.render("users/index", {users:users});
+  });
+ });
 
 // New
 router.get('/new', function(req, res){
@@ -11,14 +22,14 @@ router.get('/new', function(req, res){
 });
 
 // create
-router.post('/', function(req, res){
-  User.create(req.body, function(err, user){
-    if(err){
-      req.flash('user', req.body);
-      req.flash('errors', util.parseError(err));
-      return res.redirect('/users/new');
+router.post("/", function(req, res) {
+  User.create(req.body, function(err, user) {
+    if (err) {
+      req.flash("user", req.body);
+      req.flash("errors", util.parseError(err));
+      return res.redirect("/users/new");
     }
-    res.redirect('/');
+    res.redirect("/");
   });
 });
 
