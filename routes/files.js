@@ -16,33 +16,70 @@ router.get("/", function(req, res) {
   });
 });
 
+//audio
 router.get("/audio", function(req, res) {
   fs.readdir("files/audio", "utf8", function(error, filelist) {
     res.render("files/audio", { filelist: filelist });
   });
 });
 
+router.get("/audio/:id", function(req, res) {
+    var filename = req.params.id;
+    filepath ="./files/audio/"+filename;
+      res.download(filepath);
+});
+
+//video
 router.get("/video", function(req, res) {
   fs.readdir("files/video", "utf8", function(error, filelist) {
     res.render("files/video", { filelist: filelist });
   });
 });
 
+router.get("/video/:id", function(req, res) {
+    var filename = req.params.id;
+    filepath ="./files/video/"+filename;
+      res.download(filepath);
+});
+
+
+//image
 router.get("/image", function(req, res) {
   fs.readdir("files/image", "utf8", function(error, filelist) {
     res.render("files/image", { filelist: filelist });
   });
 });
+
+router.get("/image/:id", function(req, res) {
+    var filename = req.params.id;
+    filepath ="./files/image/"+filename;
+      res.download(filepath);
+});
+
+//text
 router.get("/text", function(req, res) {
   fs.readdir("files/text", "utf8", function(error, filelist) {
     res.render("files/text", { filelist: filelist });
   });
 });
 
+router.get("/text/:id", function(req, res) {
+    var filename = req.params.id;
+    filepath ="./files/text/"+filename;
+      res.download(filepath);
+});
+
+//application
 router.get("/application", function(req, res) {
   fs.readdir("files/application", "utf8", function(error, filelist) {
     res.render("files/application", { filelist: filelist });
   });
+});
+
+router.get("/application/:id", function(req, res) {
+    var filename = req.params.id;
+    filepath ="./files/application/"+filename;
+      res.download(filepath);
 });
 
 
@@ -67,15 +104,15 @@ var _storage = multer.diskStorage({
       }
       var cnt = 0;
       for (var i = 0; i < files.length; i++) {
-        if (files[i].indexOf(file.originalname) == 0) {
+        if (files[i].indexOf(req.user.name+req.user.position + " " + file.originalname) == 0) {
           cnt++;
         }
       }
       console.log(req.user)
       if (cnt > 0) {
-        cb(null, req.user.name + " " + file.originalname + " - " + cnt);
+        cb(null, req.user.name+req.user.position + " " + file.originalname + " - " + cnt);
       } else {
-        cb(null, req.user.name + " " + file.originalname);
+        cb(null, req.user.name+req.user.position + " " + file.originalname);
       }
     });
   }
