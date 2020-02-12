@@ -9,7 +9,7 @@ var Comment = require("../models/Comment");
 
 //Index
 router.get("/", function(req, res) {
-  fs.readdir("files/", "utf8", function(error, filelist) {
+  fs.readdir("storages/", "utf8", function(error, filelist) {
     console.log(filelist);
     var sort = ['기타', '녹음/음원', '사진/그림', '문서/글자', '영상/녹화']
     res.render("files/index", { filelist: filelist, sort });
@@ -18,74 +18,74 @@ router.get("/", function(req, res) {
 
 //audio
 router.get("/audio", function(req, res) {
-  fs.readdir("files/audio", "utf8", function(error, filelist) {
+  fs.readdir("storages/audio", "utf8", function(error, filelist) {
     res.render("files/audio", { filelist: filelist });
   });
 });
 
 router.get("/audio/:id", function(req, res) {
     var filename = req.params.id;
-    filepath ="./files/audio/"+filename;
+    filepath ="./storages/audio/"+filename;
       res.download(filepath);
 });
 
 //video
 router.get("/video", function(req, res) {
-  fs.readdir("files/video", "utf8", function(error, filelist) {
+  fs.readdir("storages/video", "utf8", function(error, filelist) {
     res.render("files/video", { filelist: filelist });
   });
 });
 
 router.get("/video/:id", function(req, res) {
     var filename = req.params.id;
-    filepath ="./files/video/"+filename;
+    filepath ="./storages/video/"+filename;
       res.download(filepath);
 });
 
 
 //image
 router.get("/image", function(req, res) {
-  fs.readdir("files/image", "utf8", function(error, filelist) {
+  fs.readdir("storages/image", "utf8", function(error, filelist) {
     res.render("files/image", { filelist: filelist });
   });
 });
 
 router.get("/image/:id", function(req, res) {
     var filename = req.params.id;
-    filepath ="./files/image/"+filename;
+    filepath ="./storages/image/"+filename;
       res.download(filepath);
 });
 
 //text
 router.get("/text", function(req, res) {
-  fs.readdir("files/text", "utf8", function(error, filelist) {
+  fs.readdir("storages/text", "utf8", function(error, filelist) {
     res.render("files/text", { filelist: filelist });
   });
 });
 
 router.get("/text/:id", function(req, res) {
     var filename = req.params.id;
-    filepath ="./files/text/"+filename;
+    filepath ="./storages/text/"+filename;
       res.download(filepath);
 });
 
 //application
 router.get("/application", function(req, res) {
-  fs.readdir("files/application", "utf8", function(error, filelist) {
+  fs.readdir("storages/application", "utf8", function(error, filelist) {
     res.render("files/application", { filelist: filelist });
   });
 });
 
 router.get("/application/:id", function(req, res) {
     var filename = req.params.id;
-    filepath ="./files/application/"+filename;
+    filepath ="./storages/application/"+filename;
       res.download(filepath);
 });
 
 
 var _storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    var path = "files/" + file.mimetype.split("/")[0] + "/";
+    var path = "storages/" + file.mimetype.split("/")[0] + "/";
     if (!fs.existsSync(path)) {
       fs.mkdir(path, function(err) {
         if (err) {
@@ -96,7 +96,7 @@ var _storage = multer.diskStorage({
     cb(null, path);
   },
   filename: function(req, file, cb) {
-    var path = "files/" + file.mimetype.split("/")[0] + "/";
+    var path = "storages/" + file.mimetype.split("/")[0] + "/";
     fs.readdir(path, function(err, files) {
       if (err) {
         console.log(err);
