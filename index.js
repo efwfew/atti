@@ -54,6 +54,7 @@ app.use('/users', require('./routes/users'));
 app.use('/samples', util.getPostQueryString, require('./routes/samples'));
 app.use('/reports', util.getPostQueryString, require('./routes/reports'));
 app.use('/files', util.getPostQueryString, require('./routes/files'));
+app.use('/daycares', util.getPostQueryString, require('./routes/daycares'));
 app.use('/comments', util.getPostQueryString, require('./routes/comments'));
 
 // Port setting

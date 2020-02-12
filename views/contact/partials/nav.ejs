@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-sm navbar-light bg-light mb-3">
+  <div class="container">
+    <div class="navbar-brand">어린이집 리스트</div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav">
+        <% if(isAuthenticated){ %>
+        <li class="nav-item"><a href="/contact/suwon" class="nav-link">수원</a></li>
+        <li class="nav-item"><a href="/contact/osan" class="nav-link">오산</a></li>
+        <li class="nav-item"><a href="/contact/yongin" class="nav-link">용인</a></li>
+        <li class="nav-item"><a href="/contact/hwasung" class="nav-link">화성</a></li>
+        <% } else { %>
+        <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+        
+        <% } %>
+        
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <% if(isAuthenticated){ %>
+          
+        <% } else { %>
+          <li class="nav-item"><a href="/login" class="nav-link">로그인하셔야 합니다.</a></li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
