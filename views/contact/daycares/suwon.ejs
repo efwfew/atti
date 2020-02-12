@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../../partials/head') %>
+  </head>
+  <body>
+    <%- include('../../partials/nav.ejs') %>
+    <%- include('../partials/nav.ejs') %>
+
+    <div class="container mb-3">
+
+      <h2 class="mb-3">수원</h2>
+
+      <table class="board-table table table-sm border-bottom">
+
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">이름</th>
+            <th scope="col" class="author">전화번호</th>
+        </tr>
+        </thead>
+
+        <tbody>
+          <% if(daycares == null || daycares.length == 0){ %>
+            <tr>
+              <td colspan=2> There is no data to show :( </td>
+            </tr>
+          <% } %>
+          <% daycares.forEach(function(daycare) { %>
+            <tr>
+              <td>
+                <a href="/daycares/<%= daycare._id %><%= getPostQueryString() %>">
+                  <div data-search-highlight="title" class="ellipsis"><%= daycare.name %></div>
+                </a>
+              </td>
+              <td class="author">
+                <!-- <a href="/daycares<%= getPostQueryString(false, { searchType:'city!', searchText:daycare.city }) %>"> -->
+                  <div data-search-highlight="author" class="ellipsis"><%= daycare.phone %></div>
+                <!-- </a> -->
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+
+      </table>
+
+      <div class="row mb-3">
+
+        <div class="col-2">
+          <% if(isAuthenticated){ %>
+            <a class="btn btn-primary" href="/daycares/new<%= getPostQueryString() %>">New</a>
+          <% } %>
+        </div>
+
+        <nav class="col-8">
+          <%
+            var offset = 2;
+            var previousBtnEnabled = currentPage>1;
+            var nextBtnEnabled = currentPage<maxPage;
+          %>
+          <ul class="pagination pagination-sm justify-content-center align-items-center h-100 mb-0">
+            <li class="page-item <%= previousBtnEnabled?'':'disabled' %>">
+              <a class="page-link" href="/posts<%= getPostQueryString(false, {page:currentPage-1}) %>" <%= previousBtnEnabled?'':'tabindex=-1' %>>&laquo;</a>
+            </li>
+            <% for(i=1;i<=maxPage;i++){ %>
+              <% if(i==1 || i==maxPage || (i>=currentPage-offset && i<=currentPage+offset)){ %>
+                <li class="page-item <%= currentPage==i?'active':'' %>"><a class="page-link" href="/posts<%= getPostQueryString(false, {page:i}) %>"> <%= i %> </a></li>
+              <% } else if(i==2 || i==maxPage-1){ %>
+                <li><a class="page-link">...</a></li>
+              <% } %>
+            <% } %>
+            <li class="page-item <%= nextBtnEnabled?'':'disabled' %>">
+              <a class="page-link" href="/posts<%= getPostQueryString(false, {page:currentPage+1}) %>" <%= nextBtnEnabled?'':'tabindex=-1' %>>&raquo;</a>
+            </li>
+          </ul>
+        </nav>
+
+      </div>
+
+      <form action="/daycares" method="get" class="post-index-tool">
+        <div class="form-row">
+
+          <div class="form-group col-3">
+            <label>Show</label>
+            <select name="limit" class="custom-select" onchange="this.parentElement.parentElement.parentElement.submit()">
+              <option value="30" <%= limit==10?'selected':'' %>>30 posts</option>
+              <option value="50" <%= limit==20?'selected':'' %>>50 posts</option>
+            </select>
+          </div>
+
+          <div class="form-group col-9">
+            <label>Search</label>
+            <div class="input-group">
+              <select name="searchType" class="custom-select">
+                <option value="title,body" <%= searchType=='title,body'?'selected':'' %>>Title, Body</option>
+                <option value="title" <%= searchType=='title'?'selected':'' %>>Title</option>
+                <option value="body" <%= searchType=='body'?'selected':'' %>>Body</option>
+                <option value="author" <%= searchType=='author'?'selected':'' %>>Author</option>
+              </select>
+              <input minLength="3" type="text" name="searchText" value="<%= searchText %>">
+              <div class="input-group-append">
+                <button class="btn btn-outline-primary" type="submit">Search</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </form>
+
+    </div>
+  </body>
+</html>

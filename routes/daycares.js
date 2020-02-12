@@ -10,38 +10,38 @@ router.get('/', function(req, res){
   res.render('contact/index');
 });
 
-// Index
-// router.get('/', async function(req, res){
-//   var page = Math.max(1, parseInt(req.query.page));
-//   var limit = Math.max(1, parseInt(req.query.limit));
-//   page = !isNaN(page)?page:1;
-//   limit = !isNaN(limit)?limit:10;
+// Index suwon
+router.get('/suwon', async function(req, res){
+  var page = Math.max(1, parseInt(req.query.page));
+  var limit = Math.max(1, parseInt(req.query.limit));
+  page = !isNaN(page)?page:1;
+  limit = !isNaN(limit)?limit:10;
 
-//   var skip = (page-1)*limit;
-//   var maxPage = 0;
-//   var searchQuery = await createSearchQuery(req.query);
-//   var daycares = [];
+  var skip = (page-1)*limit;
+  var maxPage = 0;
+  var searchQuery = await createSearchQuery(req.query);
+  var daycares = [];
 
-//   if(searchQuery) {
-//     var count = await Daycare.countDocuments(searchQuery);
-//     maxPage = Math.ceil(count/limit);
-//     daycares = await Daycare.find(searchQuery)
-//       .populate('name')
-//       .sort('-createdAt')
-//       .skip(skip)
-//       .limit(limit)
-//       .exec();
-//   }
+  if(searchQuery) {
+    var count = await Daycare.countDocuments(searchQuery);
+    maxPage = Math.ceil(count/limit);
+    daycares = await Daycare.find(searchQuery)
+      .populate('author')
+      .sort('city')
+      .skip(skip)
+      .limit(limit)
+      .exec();
+  }
 
-//   res.render('daycares/index', {
-//     daycares:daycares,
-//     currentPage:page,
-//     maxPage:maxPage,
-//     limit:limit,
-//     searchType:req.query.searchType,
-//     searchText:req.query.searchText
-//   });
-// });
+  res.render('contact/daycares/suwon', {
+    daycares:daycares,
+    currentPage:page,
+    maxPage:maxPage,
+    limit:limit,
+    searchType:req.query.searchType,
+    searchText:req.query.searchText,
+  });
+});
 
 // New
 router.get('/new', util.isLoggedin, function(req, res){
@@ -51,17 +51,17 @@ router.get('/new', util.isLoggedin, function(req, res){
 });
 
 // create
-// router.post('/', util.isLoggedin, function(req, res){
-//   req.body.author = req.user._id;
-//   Daycare.create(req.body, function(err, daycare){
-//     if(err){
-//       req.flash('daycare', req.body);
-//       req.flash('errors', util.parseError(err));
-//       return res.redirect('/daycares/new'+res.locals.getPostQueryString());
-//     }
-//     res.redirect('/daycares'+res.locals.getPostQueryString(false, { page:1, searchText:'' }));
-//   });
-// });
+router.post('/', util.isLoggedin, function(req, res){
+  req.body.author = req.user._id;
+  Daycare.create(req.body, function(err, daycare){
+    if(err){
+      req.flash('daycare', req.body);
+      req.flash('errors', util.parseError(err));
+      return res.redirect('/daycares/new'+res.locals.getPostQueryString());
+    }
+    res.redirect('/daycares'+res.locals.getPostQueryString(false, { page:1, searchText:'' }));
+  });
+});
 
 // show
 router.get('/:id', function(req, res){

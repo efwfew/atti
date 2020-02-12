@@ -20,9 +20,9 @@ router.get('/', async function(req, res){
   if(searchQuery) {
     var count = await Post.countDocuments(searchQuery);
     maxPage = Math.ceil(count/limit);
-    posts = await Post.find(searchQuery)
+    posts = await Post.findOne(searchQuery)
       .populate('author')
-      .sort('-createdAt')
+      .sort('city:수원시')
       .skip(skip)
       .limit(limit)
       .exec();
