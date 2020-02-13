@@ -20,9 +20,9 @@ router.get('/', async function(req, res){
   if(searchQuery) {
     var count = await Post.countDocuments(searchQuery);
     maxPage = Math.ceil(count/limit);
-    posts = await Post.findOne(searchQuery)
+    posts = await Post.find(searchQuery)
       .populate('author')
-      .sort('city:수원시')
+      .sort('-createdAt')
       .skip(skip)
       .limit(limit)
       .exec();
@@ -36,6 +36,7 @@ router.get('/', async function(req, res){
     searchType:req.query.searchType,
     searchText:req.query.searchText
   });
+  console.log(req.query)
 });
 
 // New
@@ -95,6 +96,7 @@ router.get('/:id/edit', util.isLoggedin, checkPermission, function(req, res){
 // update
 router.put('/:id', util.isLoggedin, checkPermission, function(req, res){
   req.body.updatedAt = Date.now();
+  req.body.author = req.user._id;
   Post.findOneAndUpdate({_id:req.params.id}, req.body, {runValidators:true}, function(err, post){
     if(err){
       req.flash('post', req.body);

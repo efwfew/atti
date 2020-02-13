@@ -5,7 +5,6 @@
   </head>
   <body>
     <%- include('../../partials/nav.ejs') %>
-    <%- include('../partials/nav.ejs') %>
 
     <div class="container mb-3">
 
@@ -16,7 +15,9 @@
         <thead class="thead-light">
           <tr>
             <th scope="col">이름</th>
-            <th scope="col" class="author">전화번호</th>
+            <th scope="col" class="phone">전화번호</th>
+            <th scope="col" class="author">작성자</th>
+            
         </tr>
         </thead>
 
@@ -29,16 +30,21 @@
           <% daycares.forEach(function(daycare) { %>
             <tr>
               <td>
-                <a href="/daycares/<%= daycare._id %><%= getPostQueryString() %>">
+                <a href="/suwon/<%= daycare._id %><%= getPostQueryString() %>">
                   <div data-search-highlight="title" class="ellipsis"><%= daycare.name %></div>
                 </a>
               </td>
-              <td class="author">
-                <!-- <a href="/daycares<%= getPostQueryString(false, { searchType:'city!', searchText:daycare.city }) %>"> -->
-                  <div data-search-highlight="author" class="ellipsis"><%= daycare.phone %></div>
-                <!-- </a> -->
+              <td class="phone">
+                <a href="tel:<%= daycare.phone %>">
+                  <div data-search-highlight="phone" class="ellipsis"><%= daycare.phone %></div>
+                </a>
               </td>
-            </tr>
+              <td class="author">
+                <a href="/suwon<%= getPostQueryString(false, { searchType:'author!', searchText:daycare.author }) %>">
+                  <div data-search-highlight="author" class="ellipsis"><%= daycare.author ? daycare.author.name : "" %></div>
+                </a>
+              </td>
+              
           <% }) %>
         </tbody>
 
@@ -48,7 +54,7 @@
 
         <div class="col-2">
           <% if(isAuthenticated){ %>
-            <a class="btn btn-primary" href="/daycares/new<%= getPostQueryString() %>">New</a>
+            <a class="btn btn-primary" href="/suwon/new<%= getPostQueryString() %>">New</a>
           <% } %>
         </div>
 
@@ -60,44 +66,44 @@
           %>
           <ul class="pagination pagination-sm justify-content-center align-items-center h-100 mb-0">
             <li class="page-item <%= previousBtnEnabled?'':'disabled' %>">
-              <a class="page-link" href="/posts<%= getPostQueryString(false, {page:currentPage-1}) %>" <%= previousBtnEnabled?'':'tabindex=-1' %>>&laquo;</a>
+              <a class="page-link" href="/suwon<%= getPostQueryString(false, {page:currentPage-1}) %>" <%= previousBtnEnabled?'':'tabindex=-1' %>>&laquo;</a>
             </li>
             <% for(i=1;i<=maxPage;i++){ %>
               <% if(i==1 || i==maxPage || (i>=currentPage-offset && i<=currentPage+offset)){ %>
-                <li class="page-item <%= currentPage==i?'active':'' %>"><a class="page-link" href="/posts<%= getPostQueryString(false, {page:i}) %>"> <%= i %> </a></li>
+                <li class="page-item <%= currentPage==i?'active':'' %>"><a class="page-link" href="/suwon<%= getPostQueryString(false, {page:i}) %>"> <%= i %> </a></li>
               <% } else if(i==2 || i==maxPage-1){ %>
                 <li><a class="page-link">...</a></li>
               <% } %>
             <% } %>
             <li class="page-item <%= nextBtnEnabled?'':'disabled' %>">
-              <a class="page-link" href="/posts<%= getPostQueryString(false, {page:currentPage+1}) %>" <%= nextBtnEnabled?'':'tabindex=-1' %>>&raquo;</a>
+              <a class="page-link" href="/suwon<%= getPostQueryString(false, {page:currentPage+1}) %>" <%= nextBtnEnabled?'':'tabindex=-1' %>>&raquo;</a>
             </li>
           </ul>
         </nav>
 
       </div>
 
-      <form action="/daycares" method="get" class="post-index-tool">
+      <form action="/suwon" method="get" class="post-index-tool">
         <div class="form-row">
 
           <div class="form-group col-3">
             <label>Show</label>
             <select name="limit" class="custom-select" onchange="this.parentElement.parentElement.parentElement.submit()">
-              <option value="30" <%= limit==10?'selected':'' %>>30 posts</option>
-              <option value="50" <%= limit==20?'selected':'' %>>50 posts</option>
+              <option value="20" <%= limit==20?'selected':'' %>>20 posts</option>
+              <option value="30" <%= limit==30?'selected':'' %>>30 posts</option>
             </select>
           </div>
 
           <div class="form-group col-9">
-            <label>Search</label>
+            <label>검색</label>
             <div class="input-group">
               <select name="searchType" class="custom-select">
-                <option value="title,body" <%= searchType=='title,body'?'selected':'' %>>Title, Body</option>
-                <option value="title" <%= searchType=='title'?'selected':'' %>>Title</option>
-                <option value="body" <%= searchType=='body'?'selected':'' %>>Body</option>
-                <option value="author" <%= searchType=='author'?'selected':'' %>>Author</option>
+                <option value="city,street" <%= searchType=='city,street'?'selected':'' %>>시, 동</option>
+                <option value="street" <%= searchType=='street'?'selected':'' %>>동</option>
+                <option value="name" <%= searchType=='name'?'selected':'' %>>원명</option>
+                <option value="author" <%= searchType=='author'?'selected':'' %>>작성자</option>
               </select>
-              <input minLength="3" type="text" name="searchText" value="<%= searchText %>">
+              <input minLength="2" type="text" name="searchText" value="<%= searchText %>">
               <div class="input-group-append">
                 <button class="btn btn-outline-primary" type="submit">Search</button>
               </div>

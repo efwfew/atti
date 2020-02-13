@@ -15,9 +15,14 @@ body {
 .board-table {
   table-layout: fixed;
 }
+.board-table .phone {
+  width: 140px;
+  text-align: center;
+}
 .board-table .author,
 .board-table .date {
   width: 100px;
+  text-align: center;
 }
 
 .post-body,

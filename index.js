@@ -14,6 +14,7 @@ mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
+mongoose.Schema.Types.Boolean.convertToFalse.add('');
 mongoose.connect(mongodb);
 var db = mongoose.connection;
 db.once('open', function(){
@@ -54,11 +55,11 @@ app.use('/users', require('./routes/users'));
 app.use('/samples', util.getPostQueryString, require('./routes/samples'));
 app.use('/reports', util.getPostQueryString, require('./routes/reports'));
 app.use('/files', util.getPostQueryString, require('./routes/files'));
-app.use('/daycares', util.getPostQueryString, require('./routes/daycares'));
+app.use('/suwon', util.getPostQueryString, require('./routes/daycares'));
 app.use('/comments', util.getPostQueryString, require('./routes/comments'));
 
 // Port setting
 var port = 3000;
 app.listen(port, function(){
-  console.log('server on! http://localhost:'+port);
+  console.log('server on! http://localhost:'+ port);
 });

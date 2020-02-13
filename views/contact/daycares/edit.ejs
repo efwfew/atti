@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../../partials/head') %>
+  </head>
+  <body>
+    <%- include('../../partials/nav') %>
+
+    <div class="container mb-3">
+
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-1 pl-2 pr-2">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item"><a href="/daycare">Board</a></li>
+          <li class="breadcrumb-item active" aria-current="page">New Post</li>
+        </ol>
+      </nav>
+
+      <form action="/suwon/<%= daycare._id %>?_method=put<%= getPostQueryString(true) %>" method="post">
+
+        <div class="form-group">
+            <label for="check">연결여부</label>
+            <input type="checkbox" id="check" name="check" value="<%= daycare.check %>" >
+        </div>
+
+        <div class="form-group">
+          <label for="name">어린이집명</label>
+          <input type="text" id="name" name="name" value="<%= daycare.name %>" class="form-control <%= (errors.name)?'is-invalid':'' %>" disabled>
+          <% if(errors.name){ %>
+            <span class="invalid-feedback"><%= errors.name.message %></span>
+          <% } %>
+        </div>
+
+        <div class="form-group">
+            <label for="owner">원장</label>
+            <input type="text" id="owner" name="owner" value="<%= daycare.owner %>" class="form-control <%= (errors.owner)?'is-invalid':'' %>" disabled>
+            <% if(errors.owner){ %>
+              <span class="invalid-feedback"><%= errors.owner.message %></span>
+            <% } %>
+        </div>
+
+        <div class="form-group">
+            <label for="type">구분</label>
+            <input type="text" id="type" name="type" value="<%= daycare.type %>" class="form-control <%= (errors.type)?'is-invalid':'' %>" disabled>
+            <% if(errors.type){ %>
+              <span class="invalid-feedback"><%= errors.type.message %></span>
+            <% } %>
+        </div>
+
+        <div class="form-group">
+            <label for="address">주소</label>
+            <input type="text" id="address" name="address" value="<%= daycare.address %>" class="form-control <%= (errors.address)?'is-invalid':'' %>" disabled>
+            <% if(errors.address){ %>
+              <span class="invalid-feedback"><%= errors.address.message %></span>
+            <% } %>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">전화번호</label>
+            <input type="text" id="phone" name="phone" value="<%= daycare.phone %>" class="form-control <%= (errors.phone)?'is-invalid':'' %>" disabled>
+            <% if(errors.phone){ %>
+              <span class="invalid-feedback"><%= errors.phone.message %></span>
+            <% } %>
+        </div>
+
+        <div class="form-group">
+            <label for="fax">팩스번호</label>
+            <input type="text" id="fax" name="fax" value="<%= daycare.fax %>" disabled>
+        </div>
+
+        <div class="form-group">
+            <label for="city">시</label>
+            <input type="text" id="city" name="city" value="<%= daycare.city %>" class="form-control <%= (errors.city)?'is-invalid':'' %>" disabled>
+            <% if(errors.city){ %>
+              <span class="invalid-feedback"><%= errors.city.message %></span>
+            <% } %>
+        </div>
+
+        <div class="form-group">
+            <label for="street">동</label>
+            <input type="text" id="street" name="street" value="<%= daycare.street %>" class="form-control <%= (errors.street)?'is-invalid':'' %>" disabled>
+            <% if(errors.street){ %>
+              <span class="invalid-feedback"><%= errors.street.message %></span>
+            <% } %>
+        </div>
+
+        <div class="form-group">
+            <label for="max">정원</label>
+            <input type="text" id="max" name="max" value="<%= daycare.max %>" class="form-control <%= (errors.max)?'is-invalid':'' %>" disabled>
+            <% if(errors.max){ %>
+              <span class="invalid-feedback"><%= errors.max.message %></span>
+            <% } %>
+        </div>
+
+        <div class="form-group">
+            <label for="now">현원</label>
+            <input type="text" id="now" name="now" value="<%= daycare.now %>" class="form-control <%= (errors.now)?'is-invalid':'' %>" disabled>
+            <% if(errors.now){ %>
+              <span class="invalid-feedback"><%= errors.now.message %></span>
+            <% } %>
+        </div>
+
+        <div class="form-group">
+            <label for="contract">계약여부</label>
+            <input type="checkbox" id="contract" name="contract" value="<%= daycare.contract %>" >
+        </div>
+
+        <div class="form-group">
+            <label for="bitch">미친년</label>
+            <input type="checkbox" id="bitch" name="bitch" value="<%= daycare.bitch %>" >
+        </div>
+
+        <div class="form-group">
+          <label for="msg">비고/메모</label>
+          <textarea id="msg" name="msg" rows="10"><%= daycare.msg %></textarea>
+        </div>
+
+        <% if(errors.unhandled){ %>
+          <div class="invalid-feedback d-block">
+            <%= errors.unhandled %>
+          </div>
+        <% } %>
+
+        <div>
+          <a class="btn btn-primary" href="/suwon<%= getPostQueryString() %>">Back</a>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+
+      </form>
+
+    </div>
+  </body>
+</html>
