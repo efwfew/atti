@@ -136,6 +136,7 @@ async function createSearchQuery(queries){
   if(queries.searchType && queries.searchText && queries.searchText.length >= 2){
     var searchTypes = queries.searchType.toLowerCase().split(',');
     var postQueries = [];
+    var booleanQueries = [];
     if(searchTypes.indexOf('city')>=0){
       postQueries.push({ city: { $regex: new RegExp(queries.searchText, 'i') } });
     }
@@ -144,6 +145,10 @@ async function createSearchQuery(queries){
     }
     if(searchTypes.indexOf('name')>=0){
       postQueries.push({ name: { $regex: new RegExp(queries.searchText, 'i') } });
+    }
+    if(searchTypes.indexOf('check')){
+      var check = await User.findOne({ check: null }).exec();
+      if(check) booleanQueries.push({check:null});
     }
     if(searchTypes.indexOf('author!')>=0){
       var user = await User.findOne({ username: queries.searchText }).exec();
@@ -157,7 +162,7 @@ async function createSearchQuery(queries){
       }
       if(userIds.length>0) postQueries.push({author:{$in:userIds}});
     }
-    if(postQueries.length>0) searchQuery = {$or:postQueries};
+    if(postQueries.length>0) searchQuery = {$and:[{$or:postQueries},{$or:booleanQueries}]};
     else searchQuery = null;
   }
   return searchQuery;
