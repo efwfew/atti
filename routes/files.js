@@ -52,7 +52,7 @@ router.get("/image", function(req, res) {
 
 router.get("/image/:id", function(req, res) {
     var filename = req.params.id;
-    filepath ="./storages/image/"+filename;
+    filepath ="./storage/image"+filename;
       res.download(filepath);
 });
 

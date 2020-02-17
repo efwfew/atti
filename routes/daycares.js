@@ -15,7 +15,7 @@ router.get('/', async function(req, res){
   var page = Math.max(1, parseInt(req.query.page));
   var limit = Math.max(1, parseInt(req.query.limit));
   page = !isNaN(page)?page:1;
-  limit = !isNaN(limit)?limit:10;
+  limit = !isNaN(limit)?limit:20;
 
   var skip = (page-1)*limit;
   var maxPage = 0;
@@ -23,11 +23,12 @@ router.get('/', async function(req, res){
   var daycares = [];
 
   if(searchQuery) {
-    var count = await Daycare.countDocuments(searchQuery);
+    var count = await Daycare.countDocuments();
     maxPage = Math.ceil(count/limit);
-    daycares = await Daycare.find(searchQuery)
+    daycares = await Daycare
+      .find(searchQuery)
       .populate('author')
-      .sort('-city')
+      .sort('street')
       .skip(skip)
       .limit(limit)
       .exec();
@@ -42,6 +43,7 @@ router.get('/', async function(req, res){
     searchText:req.query.searchText
   });
 });
+
 
 // New
 router.get('/new', util.isLoggedin, function(req, res){
