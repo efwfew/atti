@@ -20,12 +20,31 @@ router.get('/', async function(req, res){
   if(searchQuery) {
     var count = await Post.countDocuments(searchQuery);
     maxPage = Math.ceil(count/limit);
-    posts = await Post.find(searchQuery)
-      .populate('author')
-      .sort('-createdAt')
-      .skip(skip)
-      .limit(limit)
-      .exec();
+    posts = await Post.aggregate([
+      { $match: searchQuery },
+      { $lookup: {
+        from: 'users',
+        localField: 'author',
+        foreignField: '_id',
+        as: 'author'
+      }},
+      { $unwind: '$author'},
+      { $sort: {createdAt: -1}},
+      { $skip: skip},
+      { $limit: limit},
+      { $lookup: {
+        from: 'comments',
+        localField: '_id',
+        foreignField: 'post',
+        as: 'comments'
+      }},
+      { $project: {
+        title: 1,
+        author: {name: 1},
+        createdAt: 1,
+        commentCount: { $size: '$comments'}
+      }},
+    ]).exec();
   }
 
   res.render('posts/index', {
@@ -64,8 +83,8 @@ router.get('/:id', function(req, res){
   var commentError = req.flash('commentError')[0] || { _id:null, parentComment: null, errors:{} };
 
   Promise.all([
-      Post.findOne({_id:req.params.id}).populate({ path: 'author', select: 'username' }),
-      Comment.find({post:req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username' })
+      Post.findOne({_id:req.params.id}).populate({ path: 'author', select: 'name' }),
+      Comment.find({post:req.params.id}).sort('createdAt').populate({ path: 'author', select: 'name' })
     ])
     .then(([post, comments]) => {
       var commentTrees = util.convertToTrees(comments, '_id','parentComment','childComments');
@@ -138,11 +157,11 @@ async function createSearchQuery(queries){
       postQueries.push({ body: { $regex: new RegExp(queries.searchText, 'i') } });
     }
     if(searchTypes.indexOf('author!')>=0){
-      var user = await User.findOne({ username: queries.searchText }).exec();
+      var user = await User.findOne({ name: queries.searchText }).exec();
       if(user) postQueries.push({author:user._id});
     }
     else if(searchTypes.indexOf('author')>=0){
-      var users = await User.find({ username: { $regex: new RegExp(queries.searchText, 'i') } }).exec();
+      var users = await User.find({ name: { $regex: new RegExp(queries.searchText, 'i') } }).exec();
       var userIds = [];
       for(var user of users){
         userIds.push(user._id);

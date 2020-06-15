@@ -61,14 +61,14 @@
 
       <h4 class="mt-3">Comments</h4>
 
-      <% if(commentTrees.length){ %>
+      <% if(commentrTrees.length){ %>
         <div class="mt-3 border-bottom">
-          <% commentTrees.forEach(function(comment) { %>
+          <% commenrtTrees.forEach(function(commentr) { %>
             <%- include('./partials/comment-show', {
               report: report,
-              comment: comment,
-              commentForm: commentForm,
-              commentError: commentError,
+              commentr: commentr,
+              commentrForm: commentrForm,
+              commentrError: commentrError,
             }); %>
           <% }) %>
         </div>
@@ -76,11 +76,11 @@
 
       <div class="mt-3">
         <%- include('./partials/comment-form', {
-          actionUrl:'/comments?reportId=' + report._id,
-          comment: {},
-          commentForm: commentForm,
-          commentError: commentError,
-          parentComment: null,
+          actionUrl:'/commentsr?reportId=' + report._id,
+          commentr: {},
+          commentrForm: commentrForm,
+          commentrError: commentrError,
+          parentCommentr: null,
         }); %>
       </div>
 

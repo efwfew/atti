@@ -2,7 +2,7 @@ var express  = require('express');
 var router = express.Router();
 var Report = require('../models/Report');
 var User = require('../models/User');
-var Comment = require('../models/Comment');
+var Commentr = require('../models/Commentr');
 var util = require('../util');
 
 // Index
@@ -20,12 +20,31 @@ router.get('/', async function(req, res){
   if(searchQuery) {
     var count = await Report.countDocuments(searchQuery);
     maxPage = Math.ceil(count/limit);
-    reports = await Report.find(searchQuery)
-      .populate('author')
-      .sort('-createdAt')
-      .skip(skip)
-      .limit(limit)
-      .exec();
+    reports = await Report.aggregate([
+      { $match: searchQuery },
+      { $lookup: {
+        from: 'users',
+        localField: 'author',
+        foreignField: '_id',
+        as: 'author'
+      }},
+      { $unwind: '$author'},
+      { $sort: {createdAt: -1}},
+      { $skip: skip},
+      { $limit: limit},
+      { $lookup: {
+        from: 'commentsr',
+        localField: '_id',
+        foreignField: 'report',
+        as: 'commentsr'
+      }},
+      { $project: {
+        title: 1,
+        author: {username: 1},
+        createdAt: 1,
+        commentCount: { $size: '$commentsr'}
+      }},
+    ]).exec();
   }
 
   res.render('reports/index', {
@@ -60,16 +79,16 @@ router.post('/', util.isLoggedin, function(req, res){
 
 // show
 router.get('/:id', function(req, res){
-  var commentForm = req.flash('commentForm')[0] || { _id: null, form: {} };
-  var commentError = req.flash('commentError')[0] || { _id:null, parentComment: null, errors:{} };
+  var commentrForm = req.flash('commentrForm')[0] || { _id: null, form: {} };
+  var commentrError = req.flash('commentrError')[0] || { _id:null, parentCommentr: null, errors:{} };
 
   Promise.all([
     Report.findOne({_id:req.params.id}).populate({ path: 'author', select: 'username' }),
-      Comment.find({report:req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username' })
+      Commentr.find({report:req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username' })
     ])
-    .then(([report, comments]) => {
-      var commentTrees = util.convertToTrees(comments, '_id','parentComment','childComments');
-      res.render('reports/show', { report:report, commentTrees:commentTrees, commentForm:commentForm, commentError:commentError});
+    .then(([report, commentsr]) => {
+      var commentrTrees = util.convertToTrees(commentsr, '_id','parentCommentr','childCommentsr');
+      res.render('reports/show', { report:report, commentrTrees:commentrTrees, commentrForm:commentrForm, commentrError:commentrError});
     })
     .catch((err) => {
       return res.json(err);
