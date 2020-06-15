@@ -57,6 +57,7 @@ app.use('/reports', util.getPostQueryString, require('./routes/reports'));
 app.use('/files', util.getPostQueryString, require('./routes/files'));
 app.use('/suwon', util.getPostQueryString, require('./routes/daycares'));
 app.use('/comments', util.getPostQueryString, require('./routes/comments'));
+app.use('/commentsr', util.getPostQueryString, require('./routes/commentsr'));
 
 // Port setting
 var port = 3000;
