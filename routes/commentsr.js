@@ -5,7 +5,7 @@ var Report = require('../models/Report');
 var util = require('../util');
 
 // create
-router.report('/', util.isLoggedin, checkPostId, function(req, res){
+router.post('/', util.isLoggedin, checkPostId, function(req, res){
   var report = res.locals.report;
 
   req.body.author = req.user._id;
@@ -64,7 +64,7 @@ function checkPermission(req, res, next){
 }
 
 function checkPostId(req, res, next){
-  Report.findOne({_id:req.query.postId}, function(err, report){
+  Report.findOne({_id:req.query.reportId}, function(err, report){
     if(err) return res.json(err);
 
     res.locals.report = report;

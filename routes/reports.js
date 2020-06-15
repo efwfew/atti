@@ -40,9 +40,9 @@ router.get('/', async function(req, res){
       }},
       { $project: {
         title: 1,
-        author: {username: 1},
+        author: {name: 1,postion: 1},
         createdAt: 1,
-        commentCount: { $size: '$commentsr'}
+        commentrCount: { $size: '$commentsr'}
       }},
     ]).exec();
   }
@@ -83,8 +83,8 @@ router.get('/:id', function(req, res){
   var commentrError = req.flash('commentrError')[0] || { _id:null, parentCommentr: null, errors:{} };
 
   Promise.all([
-    Report.findOne({_id:req.params.id}).populate({ path: 'author', select: 'username' }),
-      Commentr.find({report:req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username' })
+    Report.findOne({_id:req.params.id}).populate({ path: 'author', select: 'name' }),
+      Commentr.find({report:req.params.id}).sort('createdAt').populate({ path: 'author', select: 'name' })
     ])
     .then(([report, commentsr]) => {
       var commentrTrees = util.convertToTrees(commentsr, '_id','parentCommentr','childCommentsr');

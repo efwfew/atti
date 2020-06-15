@@ -37,7 +37,7 @@
           <div class="col-md-5 col-lg-4 col-xl-3 order-sm-1 order-md-2">
             <div class="post-info card m-2 p-2">
               <div class="border-bottom pb-1 mb-1">
-                <span>Author</span> : <span data-search-highlight="author"><%= report.author ? report.author.username : "" %></span>
+                <span>Author</span> : <span data-search-highlight="author"><%= report.author ? report.author.name : "" %></span>
               </div>
               <div><span>Created</span> : <span data-date-time="<%= report.createdAt %>"></span></div>
               <% if(report.updatedAt) { %>
@@ -63,8 +63,8 @@
 
       <% if(commentrTrees.length){ %>
         <div class="mt-3 border-bottom">
-          <% commenrtTrees.forEach(function(commentr) { %>
-            <%- include('./partials/comment-show', {
+          <% commentrTrees.forEach(function(commentr) { %>
+            <%- include('./partials/commentr-show', {
               report: report,
               commentr: commentr,
               commentrForm: commentrForm,
@@ -75,7 +75,7 @@
       <% } %>
 
       <div class="mt-3">
-        <%- include('./partials/comment-form', {
+        <%- include('./partials/commentr-form', {
           actionUrl:'/commentsr?reportId=' + report._id,
           commentr: {},
           commentrForm: commentrForm,

@@ -34,7 +34,7 @@
           <% } %>
         </div>
         <div class="comment-edit">
-          <%- include('./comment-form', {
+          <%- include('./commentr-form', {
             actionUrl:'/commentsr/' + commentr._id + '?reportId=' + report._id + '&_method=put',
             commentr: commentr,
             commentrForm: commentrForm,
@@ -43,7 +43,7 @@
           }); %>
         </div>
         <div class="comment-reply">
-          <%- include('./comment-form', {
+          <%- include('./commentr-form', {
             actionUrl:'/commentsr?reportId=' + report._id,
             commentr: {},
             commentrForm: commentrForm,
@@ -58,7 +58,7 @@
   <div class="ml-3">
     <% if(commentr.childCommentsr){ %>
       <% commentr.childCommentsr.forEach(function(childCommentr) { %>
-        <%- include('./comment-show', {
+        <%- include('./commentr-show', {
           report: report,
           commentr: childCommentr,
           commentrForm: commentrForm,

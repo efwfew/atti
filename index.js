@@ -7,7 +7,7 @@ var session = require('express-session');
 var passport = require('./config/passport');
 var util = require('./util');
 var app = express();
-var mongodb = "mongodb+srv://atti_event:djfudnsqlalfqjsgh@attipageforworker-r3gp8.mongodb.net/test?retryWrites=true&w=majority"
+var mongodb = "mongodb+srv://atti_event:djfudnsqlalfqjsgh@attipageforworker-r3gp8.mongodb.net/test?retryWrites=true&w=majority";
 
 // DB setting
 mongoose.set('useNewUrlParser', true);
@@ -28,7 +28,7 @@ db.on('error', function(err){
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({extended:false}));
 app.use(methodOverride('_method'));
 app.use(flash());
 app.use(session({secret:'MySecret', resave:true, saveUninitialized:true}));
@@ -43,7 +43,7 @@ app.use(function(req,res,next){
   res.locals.currentUser = req.user;
   res.locals.session = req.session;
   if (req.user) {
-    req.user.username;
+      req.user.username;
   }
   next();
 });

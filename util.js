@@ -15,7 +15,7 @@ util.parseError = function(errors){
     parsed.unhandled = JSON.stringify(errors);
   }
   return parsed;
-}
+};
 
 util.isLoggedin = function(req, res, next){
   if(req.isAuthenticated()){
@@ -25,13 +25,13 @@ util.isLoggedin = function(req, res, next){
     req.flash('errors', {login:'Please login first'});
     res.redirect('/login');
   }
-}
+};
 
 util.noPermission = function(req, res){
   req.flash('errors', {login:"You don't have permission"});
   req.logout();
   res.redirect('/login');
-}
+};
 
 util.getPostQueryString = function(req, res, next){
   res.locals.getPostQueryString = function(isAppended=false, overwrites={}){    
@@ -50,9 +50,9 @@ util.getPostQueryString = function(req, res, next){
     if(queryArray.length>0) queryString = (isAppended?'&':'?') + queryArray.join('&');
 
     return queryString;
-  }
+  };
   next();
-}
+};
 
 util.getSampleQueryString = function(req, res, next){
   res.locals.getSampleQueryString = function(isAppended=false, overwrites={}){    
@@ -71,9 +71,9 @@ util.getSampleQueryString = function(req, res, next){
     if(queryArray.length>0) queryString = (isAppended?'&':'?') + queryArray.join('&');
 
     return queryString;
-  }
+  };
   next();
-}
+};
 
 util.convertToTrees = function(array, idFieldName, parentIdFieldName, childrenFieldName){
   var cloned = array.slice();
@@ -102,6 +102,6 @@ util.convertToTrees = function(array, idFieldName, parentIdFieldName, childrenFi
   }
 
   return cloned;
-}
+};
 
 module.exports = util;
