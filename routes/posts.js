@@ -36,7 +36,6 @@ router.get('/', async function(req, res){
     searchType:req.query.searchType,
     searchText:req.query.searchText
   });
-  console.log(req.query)
 });
 
 // New
