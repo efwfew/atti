@@ -40,7 +40,7 @@ router.get('/', async function(req, res){
       }},
       { $project: {
         title: 1,
-        author: {name: 1,postion: 1},
+        author : 1,
         createdAt: 1,
         commentrCount: { $size: '$commentsr'}
       }},
@@ -156,11 +156,11 @@ async function createSearchQuery(queries){
       postQueries.push({ body: { $regex: new RegExp(queries.searchText, 'i') } });
     }
     if(searchTypes.indexOf('author!')>=0){
-      var user = await User.findOne({ username: queries.searchText }).exec();
+      var user = await User.findOne({ name: queries.searchText }).exec();
       if(user) postQueries.push({author:user._id});
     }
     else if(searchTypes.indexOf('author')>=0){
-      var users = await User.find({ username: { $regex: new RegExp(queries.searchText, 'i') } }).exec();
+      var users = await User.find({ name: { $regex: new RegExp(queries.searchText, 'i') } }).exec();
       var userIds = [];
       for(var user of users){
         userIds.push(user._id);
