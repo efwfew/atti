@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 
 // schema
 var reportSchema = mongoose.Schema({
-  title:{type:String, required:[true,'Title is required!']},
-  date:{type:Date, required:[true,'Body is required!']},
+  title:{type:String, required:[true,'제목을 입력하세요!']},
+  date:{type:Date},
   body1:{type:String, required:[true,'Body1 is required!']},
   body2:{type:String, required:[true,'Body2 is required!']},
   body3:{type:String, required:[true,'Body3 is required!']},
