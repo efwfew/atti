@@ -40,7 +40,7 @@ router.get('/', async function(req, res){
       }},
       { $project: {
         title: 1,
-        author: {name: 1,postion: 1},
+        author: 1,
         createdAt: 1,
         commentrCount: { $size: '$commentsr'}
       }},
