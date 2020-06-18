@@ -40,7 +40,11 @@ router.get('/', async function(req, res){
       }},
       { $project: {
         title: 1,
+<<<<<<< HEAD
         author : 1,
+=======
+        author: 1,
+>>>>>>> 1595bb5bb9c5af67d5abbf71f4839df157a9bae6
         createdAt: 1,
         commentrCount: { $size: '$commentsr'}
       }},
@@ -61,7 +65,9 @@ router.get('/', async function(req, res){
 router.get('/new', util.isLoggedin, function(req, res){
   var report = req.flash('report')[0] || {};
   var errors = req.flash('errors')[0] || {};
-  res.render('reports/new', { report:report, errors:errors });
+  var date = new Date();
+  date = getFormatDate(date);
+  res.render('reports/new', { report:report, errors:errors, date:date });
 });
 
 // create
@@ -142,6 +148,20 @@ function checkPermission(req, res, next){
 
     next();
   });
+}
+
+/**
+ *  yyyyMMdd 포맷으로 반환
+ */
+function getFormatDate(date){
+  var year = date.getFullYear();              //yyyy
+  var month = (1 + date.getMonth());          //M
+  month = month >= 10 ? month : '0' + month;  //month 두자리로 저장
+  var day = date.getDate();                   //d
+  day = day >= 10 ? day : '0' + day;          //day 두자리로 저장
+  var weekday = ["일", "월", "화", "수", "목", "금", "토"];
+  var weekname = weekday[date.getDay()];
+  return year + '년 ' + month + '월 ' + day + '일 ' + weekname + '요일';       //'-' 추가하여 yyyy-mm-dd 형태 생성 가능
 }
 
 async function createSearchQuery(queries){
