@@ -15,7 +15,7 @@ router.get('/', async function(req, res){
   var skip = (page-1)*limit;
   var maxPage = 0;
   var searchQuery = await createSearchQuery(req.query);
-  var samples = [];
+  var samples = []; 
 
   if(searchQuery) {
     var count = await Sample.countDocuments(searchQuery);

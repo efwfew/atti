@@ -53,7 +53,7 @@ router.get('/', async function(req, res){
     maxPage:maxPage,
     limit:limit,
     searchType:req.query.searchType,
-    searchText:req.query.searchText
+    searchText:req.query.searchText,
   });
 });
 

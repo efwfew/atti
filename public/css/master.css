@@ -19,9 +19,18 @@ body {
   width: 140px;
   text-align: center;
 }
-.board-table .author,
+.board-table .author {
+  width: 58px;
+  text-align: center;
+}
+
+.board-table .postion {
+  width:65px;
+  text-align: center;
+}
+
 .board-table .date {
-  width: 100px;
+  width: 81px;
   text-align: center;
 }
 
